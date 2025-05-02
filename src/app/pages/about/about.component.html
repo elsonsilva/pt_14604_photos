@@ -1,1 +1,32 @@
-<p>about works!</p>
+<div class="about-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Sobre o Projeto</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        Este projeto foi desenvolvido como solução para a Questão 3 da avaliação
+        técnica.
+      </p>
+      <p>
+        Trata-se de uma aplicação Angular 16 que utiliza componentes standalone
+        e signals para gerenciamento de estado. A aplicação permite visualizar,
+        adicionar, editar e excluir fotos obtidas da API JSONPlaceholder.
+      </p>
+      <p>Tecnologias utilizadas:</p>
+      <ul>
+        <li>Angular 16</li>
+        <li>Angular Material</li>
+        <li>RxJS para manipulação de observables</li>
+        <li>Cache local no navegador para persistência de dados</li>
+        <li>Signals para gerenciamento de estado</li>
+      </ul>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" routerLink="/menu">
+        <mat-icon>arrow_back</mat-icon>
+        Voltar para o Menu
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

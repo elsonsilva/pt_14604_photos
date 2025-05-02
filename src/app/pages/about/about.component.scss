@@ -1,0 +1,25 @@
+.about-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+mat-card {
+  max-width: 800px;
+  width: 100%;
+}
+
+mat-card-header {
+  margin-bottom: 20px;
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px;
+}
+
+ul {
+  list-style-type: disc;
+  margin-left: 20px;
+}

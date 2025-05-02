@@ -1,1 +1,24 @@
-<p>photos works!</p>
+<div class="photos-container">
+  <div class="header">
+    <h1>Galeria de Fotos</h1>
+    <div class="actions">
+      <input
+        type="file"
+        #fileInput
+        style="display: none"
+        accept="image/jpeg,image/png"
+        (change)="onFileSelected($event)"
+      />
+      <button mat-raised-button color="primary" (click)="fileInput.click()">
+        <mat-icon>add_photo_alternate</mat-icon>
+        Adicionar Foto
+      </button>
+      <button mat-raised-button routerLink="/menu">
+        <mat-icon>arrow_back</mat-icon>
+        Voltar para o Menu
+      </button>
+    </div>
+  </div>
+
+  <app-photo-grid></app-photo-grid>
+</div>

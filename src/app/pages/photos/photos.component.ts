@@ -6,83 +6,31 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { PhotoGridComponent } from '../../components/photo-grid/photo-grid.component';
 import { PhotosService } from '../../services/photos.service';
+import { MatDialogModule } from '@angular/material/dialog';
+import { EditPhotoDialogComponent } from 'src/app/components/edit-photo-dialog/edit-photo-dialog.component';
 
 @Component({
   selector: 'app-photos',
   standalone: true,
+  templateUrl: './photos.component.html',
+  styleUrls: ['./photos.component.scss'],
   imports: [
     CommonModule,
     RouterModule,
     MatButtonModule,
     MatIconModule,
     MatSnackBarModule,
+    MatDialogModule,
     PhotoGridComponent,
   ],
-  template: `
-    <div class="photos-container">
-      <div class="header">
-        <h1>Galeria de Fotos</h1>
-        <div class="actions">
-          <input
-            type="file"
-            #fileInput
-            style="display: none"
-            accept="image/jpeg,image/png"
-            (change)="onFileSelected($event)"
-          />
-          <button mat-raised-button color="primary" (click)="fileInput.click()">
-            <mat-icon>add_photo_alternate</mat-icon>
-            Adicionar Foto
-          </button>
-          <button mat-raised-button routerLink="/menu">
-            <mat-icon>arrow_back</mat-icon>
-            Voltar para o Menu
-          </button>
-        </div>
-      </div>
-
-      <app-photo-grid></app-photo-grid>
-    </div>
-  `,
-  styles: [
-    `
-      .photos-container {
-        padding: 20px;
-      }
-
-      .header {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 20px;
-
-        @media (min-width: 768px) {
-          flex-direction: row;
-          justify-content: space-between;
-          margin-left: 10%;
-          margin-right: 10%;
-        }
-      }
-
-      .actions {
-        display: flex;
-        gap: 16px;
-        margin-top: 16px;
-
-        @media (min-width: 768px) {
-          margin-top: 0;
-        }
-      }
-    `,
-  ],
 })
-export class PhotosComponent implements OnInit {
+export class PhotosComponent {
   private photosService = inject(PhotosService);
   private snackBar = inject(MatSnackBar);
 
-  ngOnInit(): void {
-    this.photosService.loadPhotos().subscribe();
-  }
+  // ngOnInit(): void {
+  //   this.photosService.loadPhotos().subscribe();
+  // }
 
   onFileSelected(event: Event): void {
     const element = event.target as HTMLInputElement;

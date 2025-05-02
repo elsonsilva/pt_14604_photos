@@ -1,1 +1,61 @@
-<p>photo-grid works!</p>
+<div class="grid-container">
+  <div class="loading-container" *ngIf="photosService.loading()">
+    <mat-spinner></mat-spinner>
+    <p>Carregando fotos...</p>
+  </div>
+
+  <div class="photos-grid" *ngIf="!photosService.loading()">
+    <mat-grid-list [cols]="getColumns()" rowHeight="1:1" gutterSize="16px">
+      <mat-grid-tile
+        *ngFor="
+          let photo of photosService.paginatedPhotos();
+          trackBy: trackByPhotoId
+        "
+      >
+        <div class="photo-card">
+          <ng-container
+            *ngIf="imageStatus[photo.id] !== 'error'; else fallbackImage"
+          >
+            <img
+              [src]="photo.thumbnailUrl"
+              [alt]="photo.title"
+              class="photo-image"
+              (error)="handleImageError($event, photo.id)"
+              (load)="handleImageLoad(photo.id)"
+            />
+          </ng-container>
+
+          <ng-template #fallbackImage>
+            <div class="fallback-container">
+              <mat-icon class="fallback-icon">image_not_supported</mat-icon>
+              <p class="fallback-text">Imagem indisponível na url informada</p>
+            </div>
+          </ng-template>
+
+          <div class="photo-actions">
+            <button
+              mat-icon-button
+              color="warn"
+              (click)="deletePhoto(photo.id)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+            <button mat-icon-button color="primary" (click)="editPhoto(photo)">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </div>
+          <div class="photo-title">{{ photo.title }}</div>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-paginator
+      [length]="photosService.photos().length"
+      [pageSize]="photosService.itemsPerPage()"
+      [pageIndex]="photosService.currentPage() - 1"
+      (page)="onPageChange($event)"
+      showFirstLastButtons
+    >
+    </mat-paginator>
+  </div>
+</div>

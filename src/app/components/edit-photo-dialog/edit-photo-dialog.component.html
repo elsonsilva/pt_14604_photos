@@ -1,1 +1,11 @@
-<p>edit-photo-dialog works!</p>
+<h2 mat-dialog-title>Editar Foto</h2>
+<div mat-dialog-content>
+  <mat-form-field appearance="fill" style="width: 100%">
+    <mat-label>Título da foto</mat-label>
+    <input matInput [(ngModel)]="data.title" />
+  </mat-form-field>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="onSave()">Salvar</button>
+</div>

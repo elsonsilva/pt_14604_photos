@@ -15,6 +15,8 @@ import { Photo } from '../../models/photo.model';
 @Component({
   selector: 'app-edit-photo-dialog',
   standalone: true,
+  templateUrl: './edit-photo-dialog.component.html',
+  styleUrls: ['./edit-photo-dialog.component.scss'],
   imports: [
     CommonModule,
     FormsModule,
@@ -23,21 +25,6 @@ import { Photo } from '../../models/photo.model';
     MatFormFieldModule,
     MatInputModule,
   ],
-  template: `
-    <h2 mat-dialog-title>Editar Foto</h2>
-    <div mat-dialog-content>
-      <mat-form-field appearance="fill" style="width: 100%">
-        <mat-label>Título da foto</mat-label>
-        <input matInput [(ngModel)]="data.title" />
-      </mat-form-field>
-    </div>
-    <div mat-dialog-actions align="end">
-      <button mat-button (click)="onCancel()">Cancelar</button>
-      <button mat-raised-button color="primary" (click)="onSave()">
-        Salvar
-      </button>
-    </div>
-  `,
 })
 export class EditPhotoDialogComponent {
   constructor(
