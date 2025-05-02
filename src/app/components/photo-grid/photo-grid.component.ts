@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
@@ -13,6 +13,7 @@ import { PhotosService } from '../../services/photos.service';
 import { EditPhotoDialogComponent } from '../edit-photo-dialog/edit-photo-dialog.component';
 
 import { Photo } from '../../models/photo.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-photo-grid',
@@ -31,33 +32,28 @@ import { Photo } from '../../models/photo.model';
   templateUrl: './photo-grid.component.html',
   styleUrls: ['./photo-grid.component.scss'],
 })
-export class PhotoGridComponent implements OnInit {
+export class PhotoGridComponent implements OnInit, OnDestroy {
   photosService = inject(PhotosService);
   dialog = inject(MatDialog);
   snackBar = inject(MatSnackBar);
+  private subscription = new Subscription();
 
-  // Adicione estas propriedades à classe
   imageStatus: { [key: number]: 'loading' | 'loaded' | 'error' } = {};
 
   ngOnInit(): void {
-    // Se você já tiver um método ngOnInit, apenas adicione este código dentro dele
-    this.photosService.loadPhotos().subscribe((photos) => {
-      photos.forEach((photo) => {
-        this.imageStatus[photo.id] = 'loading';
-      });
-    });
+    this.subscription.add(
+      this.photosService.loadPhotos().subscribe((photos) => {
+        photos.forEach((photo) => {
+          this.imageStatus[photo.id] = 'loading';
+        });
+      })
+    );
   }
 
-  // Adicione estes métodos à classe
   handleImageError(event: Event, photoId: number): boolean {
-    // Prevenir que o erro seja exibido no console
-    event.preventDefault();
-    event.stopPropagation();
-
     // Marcar a imagem como com erro
     this.imageStatus[photoId] = 'error';
 
-    // Retornar true para indicar que o erro foi tratado
     return true;
   }
 
@@ -93,13 +89,19 @@ export class PhotoGridComponent implements OnInit {
       data: { ...photo },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.photosService.updatePhoto(photo.id, result);
-        this.snackBar.open('Foto atualizada com sucesso!', 'Fechar', {
-          duration: 3000,
-        });
-      }
-    });
+    this.subscription.add(
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          this.photosService.updatePhoto(photo.id, result);
+          this.snackBar.open('Foto atualizada com sucesso!', 'Fechar', {
+            duration: 3000,
+          });
+        }
+      })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

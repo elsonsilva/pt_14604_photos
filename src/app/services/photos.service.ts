@@ -17,11 +17,6 @@ export class PhotosService {
   public _currentPage = signal<number>(1);
   public _itemsPerPage = signal<number>(9);
 
-  // Computed values
-  // public photos = computed(() => this._photos());
-  // public loading = computed(() => this._loading());
-  // public currentPage = computed(() => this._currentPage());
-  // public itemsPerPage = computed(() => this._itemsPerPage());
   public totalPages = computed(() =>
     Math.ceil(this._photos().length / this._itemsPerPage())
   );
@@ -32,6 +27,7 @@ export class PhotosService {
   });
 
   constructor(private http: HttpClient) {
+    // Antes de consultar a API, tenta carregar os dados do cache
     this.loadFromCache();
   }
 
@@ -55,7 +51,7 @@ export class PhotosService {
     this._loading.set(true);
 
     return this.http.get<Photo[]>(this.API_URL).pipe(
-      delay(this.DELAY_MS),
+      delay(this.DELAY_MS), // Simula um atraso de 750ms para exibição do loading no primeiro carregamento
       tap((photos) => {
         this.saveToCache(photos);
         this._loading.set(false);
@@ -72,14 +68,14 @@ export class PhotosService {
     const newPhoto: Photo = {
       albumId: 1,
       id: this.generateNewId(),
-      title: photo.title || 'New Photo',
+      title: photo.title || 'Nova Foto',
       url: photo.url || '',
       thumbnailUrl: photo.thumbnailUrl || photo.url || '',
     };
 
     const updatedPhotos = [newPhoto, ...this._photos()];
     this.saveToCache(updatedPhotos);
-    this._currentPage.set(1); // Return to first page
+    this._currentPage.set(1); // Após adicionar uma nova foto, volta para a primeira página. Assim o usuário vê a nova foto imediatamente.
   }
 
   public updatePhoto(id: number, data: Partial<Photo>): void {
@@ -89,7 +85,7 @@ export class PhotosService {
     if (index !== -1) {
       const updatedPhoto = { ...photos[index], ...data };
       const updatedPhotos = [...photos];
-      updatedPhotos[index] = updatedPhoto;
+      updatedPhotos[index] = updatedPhoto; // serão atualizados todos os campos, mas somemte o title será alterado na prática
       this.saveToCache(updatedPhotos);
     }
   }
@@ -98,7 +94,7 @@ export class PhotosService {
     const updatedPhotos = this._photos().filter((photo) => photo.id !== id);
     this.saveToCache(updatedPhotos);
 
-    // Adjust current page if necessary
+    // Caso a foto excluída seja a última da página, atualiza a página
     if (this.paginatedPhotos().length === 0 && this._currentPage() > 1) {
       this._currentPage.update((page) => page - 1);
     }
@@ -115,7 +111,6 @@ export class PhotosService {
     return ids.length > 0 ? Math.max(...ids) + 1 : 1;
   }
 
-  // Method to handle file upload
   public uploadPhoto(file: File): Observable<Photo> {
     return new Observable<Photo>((observer) => {
       const reader = new FileReader();
