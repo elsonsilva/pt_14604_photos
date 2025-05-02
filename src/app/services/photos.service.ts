@@ -12,16 +12,16 @@ export class PhotosService {
   private readonly DELAY_MS = 750;
 
   // Signals
-  private _photos = signal<Photo[]>([]);
-  private _loading = signal<boolean>(false);
-  private _currentPage = signal<number>(1);
-  private _itemsPerPage = signal<number>(9);
+  public _photos = signal<Photo[]>([]);
+  public _loading = signal<boolean>(false);
+  public _currentPage = signal<number>(1);
+  public _itemsPerPage = signal<number>(9);
 
   // Computed values
-  public photos = computed(() => this._photos());
-  public loading = computed(() => this._loading());
-  public currentPage = computed(() => this._currentPage());
-  public itemsPerPage = computed(() => this._itemsPerPage());
+  // public photos = computed(() => this._photos());
+  // public loading = computed(() => this._loading());
+  // public currentPage = computed(() => this._currentPage());
+  // public itemsPerPage = computed(() => this._itemsPerPage());
   public totalPages = computed(() =>
     Math.ceil(this._photos().length / this._itemsPerPage())
   );

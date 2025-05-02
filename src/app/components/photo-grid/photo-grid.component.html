@@ -1,10 +1,10 @@
 <div class="grid-container">
-  <div class="loading-container" *ngIf="photosService.loading()">
+  <div class="loading-container" *ngIf="photosService._loading()">
     <mat-spinner></mat-spinner>
     <p>Carregando fotos...</p>
   </div>
 
-  <div class="photos-grid" *ngIf="!photosService.loading()">
+  <div class="photos-grid" *ngIf="!photosService._loading()">
     <mat-grid-list [cols]="getColumns()" rowHeight="1:1" gutterSize="16px">
       <mat-grid-tile
         *ngFor="
@@ -50,9 +50,9 @@
     </mat-grid-list>
 
     <mat-paginator
-      [length]="photosService.photos().length"
-      [pageSize]="photosService.itemsPerPage()"
-      [pageIndex]="photosService.currentPage() - 1"
+      [length]="photosService._photos().length"
+      [pageSize]="photosService._itemsPerPage()"
+      [pageIndex]="photosService._currentPage() - 1"
       (page)="onPageChange($event)"
       showFirstLastButtons
     >
