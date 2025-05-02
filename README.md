@@ -1,6 +1,8 @@
 # Pt14604Photos
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.16.
+[Angular CLI](https://github.com/angular/angular-cli) version 16.2.16.
+
+Trata-se de uma aplicação Angular 16 que utiliza componentes standalone e signals para gerenciamento de estado. A aplicação permite visualizar, adicionar, editar e excluir fotos obtidas da API JSONPlaceholder.
 
 ## Development server
 
